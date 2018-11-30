@@ -1,2 +1,12 @@
-
-{{question}}
+<div>
+    {{question.question_text}}
+    {% if question_choices %}
+    <ul>
+        {% for choice in question_choices %}
+        <li>
+            {{choice}}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %} 
+</div>
