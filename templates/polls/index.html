@@ -4,7 +4,7 @@ srikanth
 {% if questions_list %}
     <ul>
     {% for question in questions_list %}
-        <li><a href="{% url 'details' question.id %}/">{{ question.question_text }}</a></li>
+        <li><a href="{% url 'polls:details' question.id %}">{{ question.question_text }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
