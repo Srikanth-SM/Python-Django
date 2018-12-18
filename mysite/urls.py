@@ -24,5 +24,6 @@ print(dir())
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^polls/',views.index)
-    url(r'^polls/', include('polls.urls'))
+    url(r'^polls/', include('polls.urls')),
+    url(r'^library/', include('library.urls'))
 ]

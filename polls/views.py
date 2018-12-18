@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import Question, Choice
+from django.contrib.auth.forms import UserCreationForm
 
 import json
 # Create your views here.
@@ -10,12 +11,12 @@ def index(request):
     # return HttpResponse("Polls App")
     questions_list = Question.objects.all()
     return render(
-                    request,
-                    'polls/index.html',
-                    {
-                        'questions_list': questions_list
-                    }
-                 )
+        request,
+        'polls/index.html',
+        {
+            'questions_list': questions_list
+        }
+    )
 
 
 def details(request, question_id):
@@ -30,12 +31,12 @@ def details(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     question_choices = question.choice_set.all()
     return render(
-                    request, 'polls/details.html',
-                    {
-                        'question': question,
-                        'question_choices': question_choices
-                    }
-                 )
+        request, 'polls/details.html',
+        {
+            'question': question,
+            'question_choices': question_choices
+        }
+    )
 
 
 def results(request, question_id):
@@ -46,12 +47,10 @@ def results(request, question_id):
     question = Question.objects.get(pk=question_id)
     question_choices = question.choice_set.all()
     print(dir(question), "hai")
-    return render(request, "polls/results.html",
-                    {
-                        'question': question,
-                        'choices': question_choices
-                    }
-                )
+    return render(
+        request, "polls/results.html", {'question': question,
+                                        'choices': question_choices}
+    )
 
 
 def votes(request, question_id):
@@ -64,7 +63,7 @@ def votes(request, question_id):
     # print(dir(Question))
     print(request.POST)
     question = get_object_or_404(Question, pk=question_id)
-    
+
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
@@ -81,4 +80,22 @@ def votes(request, question_id):
         return HttpResponseRedirect('/polls/'+question_id+'/results/')
 
 
+def get_name(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NameForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            print(form.fields)
+            return HttpResponseRedirect('/thanks/')
 
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NameForm()
+
+
+return render(request, 'polls/userForm.html', {'form': form})
